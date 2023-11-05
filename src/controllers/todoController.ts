@@ -1,4 +1,4 @@
-import { Request, Response, Errback } from "express";
+import { Response, Request } from "express";
 
 export const getAllTodos = async (req: Request, res: Response) => {
   try {

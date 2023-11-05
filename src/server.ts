@@ -1,6 +1,8 @@
+import dotenv from "dotenv";
 import express, { Express } from "express";
 import todoRoutes from "./routes/todoRoutes";
 import { PrismaClient } from "@prisma/client";
+dotenv.config();
 
 const app: Express = express();
 

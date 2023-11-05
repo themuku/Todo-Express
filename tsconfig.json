@@ -1,10 +1,20 @@
 {
   "compilerOptions": {
-    "target": "es6",
+    "target": "ES6",
     "module": "CommonJS",
-    "rootDir": "./",
+    "rootDir": "./src",
     "outDir": "./build",
+    "moduleResolution": "node",
     "esModuleInterop": true,
-    "strict": true
-  }
+    "strict": true,
+    "paths": {
+      "undici-types": ["./node_modules/undici-types"],
+      "@prisma/client": ["./node_modules/@prisma/client"]
+      // Other path mappings...
+    },
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules"]
 }
