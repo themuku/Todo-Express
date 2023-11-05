@@ -12,6 +12,6 @@ datasource db {
 
 model Todo {
   id    String @id @default(auto()) @map("_id") @db.ObjectId
-  completed Boolean
-  Title String
+  completed Boolean? @default(false)
+  title String
 }

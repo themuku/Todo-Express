@@ -26,5 +26,5 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const todoController = __importStar(require("../controllers/todoController"));
 const router = (0, express_1.Router)();
-router.route("/").get(todoController.getAllTodos);
+router.route("/").get(todoController.getAllTodos).post(todoController.addTodo);
 exports.default = router;

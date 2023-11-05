@@ -6,7 +6,7 @@ dotenv.config();
 
 const app: Express = express();
 
-const prisma = new PrismaClient();
+export const prisma: PrismaClient = new PrismaClient();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
