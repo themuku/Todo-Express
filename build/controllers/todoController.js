@@ -14,6 +14,8 @@ const server_1 = require("../server");
 const getAllTodos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const todos = yield server_1.prisma.todo.findMany();
+        if (todos.length === 0)
+            return res.status(404).json({ message: "Todos not found" });
         return res.json(todos);
     }
     catch (error) {
@@ -23,8 +25,13 @@ const getAllTodos = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.getAllTodos = getAllTodos;
 const addTodo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const newTodo = req.body;
-        const createdTodo = yield server_1.prisma.todo.create(newTodo);
+        const { title } = req.body;
+        const newTodo = {
+            title,
+        };
+        const createdTodo = yield server_1.prisma.todo.create({
+            data: newTodo,
+        });
         return res.json(createdTodo);
     }
     catch (error) {
@@ -34,6 +41,17 @@ const addTodo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.addTodo = addTodo;
 const getTodo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        const { id } = req.params;
+        if (!id)
+            return res.status(403).json({ message: "Id is required" });
+        const todo = yield server_1.prisma.todo.findUnique({
+            where: {
+                id,
+            },
+        });
+        if (!todo)
+            return res.status(404).json({ message: "Todo is not found" });
+        return res.json(todo);
     }
     catch (error) {
         return res.status(500).json({ message: error.message });
@@ -42,6 +60,37 @@ const getTodo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.getTodo = getTodo;
 const updateTodo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        const { id } = req.params;
+        const { title, completed } = req.body;
+        if (!id)
+            return res.status(403).json({ message: "Id is required" });
+        const todo = {
+            title,
+            completed,
+        };
+        if (title) {
+            const updatedTodo = yield server_1.prisma.todo.update({
+                where: {
+                    id,
+                },
+                data: todo,
+            });
+            if (!updatedTodo) {
+                return res.status(404).json({ message: "Todo is not found" });
+            }
+        }
+        if (completed) {
+            const updatedTodo = yield server_1.prisma.todo.update({
+                where: {
+                    id,
+                },
+                data: todo,
+            });
+            if (!updatedTodo) {
+                return res.status(404).json({ message: "Todo is not found" });
+            }
+        }
+        return res.json({ message: `Todo: ${id} updated successfully` });
     }
     catch (error) {
         return res.status(500).json({ message: error.message });
@@ -50,6 +99,17 @@ const updateTodo = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 exports.updateTodo = updateTodo;
 const deleteTodo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        const { id } = req.params;
+        if (!id)
+            return res.status(403).json({ message: "Id is required" });
+        const todo = yield server_1.prisma.todo.delete({
+            where: {
+                id,
+            },
+        });
+        if (!todo)
+            return res.status(404).json({ message: "Todo is not found" });
+        return res.json(todo);
     }
     catch (error) {
         return res.status(500).json({ message: error.message });

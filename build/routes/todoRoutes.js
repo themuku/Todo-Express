@@ -27,4 +27,9 @@ const express_1 = require("express");
 const todoController = __importStar(require("../controllers/todoController"));
 const router = (0, express_1.Router)();
 router.route("/").get(todoController.getAllTodos).post(todoController.addTodo);
+router
+    .route("/:id")
+    .get(todoController.getTodo)
+    .patch(todoController.updateTodo)
+    .delete(todoController.deleteTodo);
 exports.default = router;

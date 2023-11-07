@@ -17,11 +17,14 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const express_1 = __importDefault(require("express"));
 const todoRoutes_1 = __importDefault(require("./routes/todoRoutes"));
 const client_1 = require("@prisma/client");
+const cors_1 = __importDefault(require("cors"));
+const corsOptions_1 = __importDefault(require("./config/corsOptions"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 exports.prisma = new client_1.PrismaClient();
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
+app.use((0, cors_1.default)(corsOptions_1.default));
 app.use("/todo", todoRoutes_1.default);
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
     yield exports.prisma.$connect();
